@@ -1,252 +1,7 @@
-﻿/*using System;
-
-namespace Franco_Ferro
-{
-
-
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            while (true)
-            {
-                try
-                {
-                    Console.WriteLine("==== Menú ====");
-                    Console.WriteLine("1. Obtener Producto por Id");
-                    Console.WriteLine("2. Listar Todos los Productos");
-                    Console.WriteLine("3. Crear Nuevo Producto");
-                    Console.WriteLine("4. Modificar Producto");
-                    Console.WriteLine("5. Eliminar Producto");
-                    Console.WriteLine("6. Salir");
-
-                    Console.Write("Ingrese la opción deseada: ");
-                    string opcion = Console.ReadLine();
-
-                    switch (opcion)
-                    {
-                        case "1":
-                            Console.Write("Ingrese el Id del producto a obtener: ");
-                            if (int.TryParse(Console.ReadLine(), out int idObtener))
-                            {
-                                MostrarProducto(ProductoData.ObtenerProducto(idObtener));
-                            }
-                            else
-                            {
-                                Console.WriteLine("Entrada no válida para el Id.");
-                            }
-                            break;
-
-                        case "2":
-                            MostrarProducto(ProductoData.ListarProductos());
-                            break;
-
-                        case "3":
-                            CrearNuevoProducto();
-                            break;
-
-                        case "4":
-                            ModificarProducto();
-                            break;
-
-                        case "5":
-                            EliminarProducto();
-                            break;
-
-                        case "6":
-                            Environment.Exit(0);
-                            break;
-
-                        default:
-                            Console.WriteLine("Opción no válida. Por favor, ingrese un número del 1 al 6.");
-                            break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                }
-
-                Console.WriteLine("\nPresione cualquier tecla para continuar...");
-                Console.ReadKey();
-                Console.Clear();
-            }
-        }
-
-        static void MostrarProducto(System.Collections.Generic.List<Producto> productos)
-        {
-            foreach (var producto in productos)
-            {
-                Console.WriteLine($"Id: {producto.Id}, Descripción: {producto.Descripcion}, Precio: {producto.PrecioVenta}");
-            }
-        }
-
-        static void CrearNuevoProducto()
-        {
-            try
-            {
-                Console.Write("Ingrese la descripción del nuevo producto: ");
-                string descripcion = Console.ReadLine();
-
-                Console.Write("Ingrese el costo del nuevo producto: ");
-                if (double.TryParse(Console.ReadLine(), out double costo))
-                {
-                    Console.Write("Ingrese el precio de venta del nuevo producto: ");
-                    if (double.TryParse(Console.ReadLine(), out double precioVenta))
-                    {
-                        Console.Write("Ingrese el stock del nuevo producto: ");
-                        if (int.TryParse(Console.ReadLine(), out int stock))
-                        {
-                            Console.Write("Ingrese el Id del usuario: ");
-                            if (int.TryParse(Console.ReadLine(), out int idUsuario))
-                            {
-                                ProductoData.CrearProducto(new Producto
-                                {
-                                    Descripcion = descripcion,
-                                    Costo = costo,
-                                    PrecioVenta = precioVenta,
-                                    Stock = stock,
-                                    IdUsuario = idUsuario
-                                });
-                                Console.WriteLine("Producto creado exitosamente.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Entrada no válida para el Id del usuario.");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Entrada no válida para el stock.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Entrada no válida para el precio de venta.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Entrada no válida para el costo.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al crear el producto: {ex.Message}");
-            }
-        }
-
-
-        static void ModificarProducto()
-        {
-            try
-            {
-                Console.Write("Ingrese el Id del producto a modificar: ");
-                if (int.TryParse(Console.ReadLine(), out int idModificar))
-                {
-                    var producto = ProductoData.ObtenerProducto(idModificar);
-                    if (producto.Count > 0)
-                    {
-                        Console.Write("Ingrese la nueva descripción del producto: ");
-                        string nuevaDescripcion = Console.ReadLine();
-
-                        Console.Write("Ingrese el nuevo costo del producto: ");
-                        if (double.TryParse(Console.ReadLine(), out double nuevoCosto))
-                        {
-                            Console.Write("Ingrese el nuevo precio de venta del producto: ");
-                            if (double.TryParse(Console.ReadLine(), out double nuevoPrecioVenta))
-                            {
-                                Console.Write("Ingrese el nuevo stock del producto: ");
-                                if (int.TryParse(Console.ReadLine(), out int nuevoStock))
-                                {
-                                    Console.Write("Ingrese el nuevo Id del usuario: ");
-                                    if (int.TryParse(Console.ReadLine(), out int nuevoIdUsuario))
-                                    {
-                                        ProductoData.ModificarProducto(new Producto
-                                        {
-                                            Id = idModificar,
-                                            Descripcion = nuevaDescripcion,
-                                            Costo = nuevoCosto,
-                                            PrecioVenta = nuevoPrecioVenta,
-                                            Stock = nuevoStock,
-                                            IdUsuario = nuevoIdUsuario
-                                        });
-                                        Console.WriteLine("Producto modificado exitosamente.");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Entrada no válida para el nuevo Id del usuario.");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Entrada no válida para el nuevo stock.");
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Entrada no válida para el nuevo precio de venta.");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Entrada no válida para el nuevo costo.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("No se encontró ningún producto con el Id proporcionado.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Entrada no válida para el Id.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al modificar el producto: {ex.Message}");
-            }
-        }
-
-        static void EliminarProducto()
-        {
-            try
-            {
-                Console.Write("Ingrese el Id del producto a eliminar: ");
-                if (int.TryParse(Console.ReadLine(), out int idEliminar))
-                {
-                    var producto = ProductoData.ObtenerProducto(idEliminar);
-                    if (producto.Count > 0)
-                    {
-                        ProductoData.EliminarProducto(new Producto { Id = idEliminar });
-                        Console.WriteLine("Producto eliminado exitosamente.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("No se encontró ningún producto con el Id proporcionado.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Entrada no válida para el Id.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al eliminar el producto: {ex.Message}");
-            }
-        }
-
-
-
-
-    }
-}  */
-
-
-
+﻿
 using System;
+using Franco_Ferro;
+using SistemaGestionBusiness;
 
 namespace Franco_Ferro
 {
@@ -301,9 +56,10 @@ namespace Franco_Ferro
             }
         }
 
+
+
         static void MenuUsuarios()
         {
-
             while (true)
             {
                 try
@@ -325,7 +81,7 @@ namespace Franco_Ferro
                             Console.Write("Ingrese el Id del usuario a obtener: ");
                             if (int.TryParse(Console.ReadLine(), out int idObtener))
                             {
-                                MostrarUsuario(UsuarioData.ObtenerUsuario(idObtener));
+                                MostrarUsuario(UsuarioBusiness.ObtenerUsuario(idObtener));
                             }
                             else
                             {
@@ -334,7 +90,7 @@ namespace Franco_Ferro
                             break;
 
                         case "2":
-                            MostrarUsuario(UsuarioData.ListarUsuarios());
+                            MostrarUsuario(UsuarioBusiness.ListarUsuarios());
                             break;
 
                         case "3":
@@ -367,145 +123,137 @@ namespace Franco_Ferro
                 Console.ReadKey();
                 Console.Clear();
             }
-
-            static void MostrarUsuario(List<Usuario> usuarios)
-            {
-                foreach (var usuario in usuarios)
-                {
-                    Console.WriteLine($"Id: {usuario.Id}, Nombre: {usuario.Nombre}, Apellido: {usuario.Apellido}");
-                }
-            }
-
-            static void CrearNuevoUsuario()
-            {
-                try
-                {
-                    Console.Write("Ingrese el nombre del nuevo usuario: ");
-                    string nombreUsuario = Console.ReadLine();
-
-                    Console.Write("Ingrese el apellido del nuevo usuario: ");
-                    string apellidoUsuario = Console.ReadLine();
-
-                    Console.Write("Ingrese el nombre del usuario: ");
-                    string nombreDeUsuario = Console.ReadLine();
-
-                    Console.Write("Ingrese la contraseña del nuevo usuario: ");
-                    string contrasenaUsuario = Console.ReadLine();
-
-                    Console.Write("Ingrese el correo electrónico del nuevo usuario: ");
-                    string mailUsuario = Console.ReadLine();
-
-                    
-
-                    UsuarioData.CrearUsuario(new Usuario
-                    {
-                        Nombre = nombreUsuario,
-                        Apellido = apellidoUsuario,
-                        NombreUsuario = nombreDeUsuario,
-                        Contrasena = contrasenaUsuario,
-                        Mail = mailUsuario
-                        
-                    });
-
-                    Console.WriteLine("Usuario creado exitosamente.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error al crear el usuario: {ex.Message}");
-                }
-            }
-
-
-            static void ModificarUsuario()
-            {
-                try
-                {
-                    Console.Write("Ingrese el Id del usuario a modificar: ");
-                    if (int.TryParse(Console.ReadLine(), out int idModificar))
-                    {
-                        var usuario = UsuarioData.ObtenerUsuario(idModificar);
-                        if (usuario.Count > 0)
-                        {
-                            Console.Write("Ingrese el nuevo nombre del usuario: ");
-                            string nuevoNombre = Console.ReadLine();
-
-                            Console.Write("Ingrese el nuevo apellido del usuario: ");
-                            string nuevoApellido = Console.ReadLine();
-
-                            Console.Write("Ingrese el nuevo nombre de usuario: ");
-                            string nuevoNombreUsuario = Console.ReadLine();
-
-                            Console.Write("Ingrese el nuevo correo electrónico del usuario: ");
-                            string nuevoMail = Console.ReadLine();
-
-                            Console.Write("Ingrese la nueva contraseña del usuario: ");
-                            string nuevaContrasena = Console.ReadLine();
-
-                            UsuarioData.ModificarUsuario(new Usuario
-                            {
-                                Id = idModificar,
-                                Nombre = nuevoNombre,
-                                Apellido = nuevoApellido,
-                                NombreUsuario = nuevoNombreUsuario,
-                                Mail = nuevoMail,
-                                Contrasena = nuevaContrasena
-                            });
-
-                            Console.WriteLine("Usuario modificado exitosamente.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("No se encontró ningún usuario con el Id proporcionado.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Entrada no válida para el Id.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error al modificar el usuario: {ex.Message}");
-                }
-            }
-
-
-
-            static void EliminarUsuario()
-            {
-                try
-                {
-                    Console.Write("Ingrese el Id del usuario a eliminar: ");
-                    if (int.TryParse(Console.ReadLine(), out int idEliminar))
-                    {
-                        var usuario = UsuarioData.ObtenerUsuario(idEliminar);
-                        if (usuario.Count > 0)
-                        {
-                            UsuarioData.EliminarUsuario(new Usuario { Id = idEliminar });
-                            Console.WriteLine("Usuario eliminado exitosamente.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("No se encontró ningún usuario con el Id proporcionado.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Entrada no válida para el Id.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error al eliminar el usuario: {ex.Message}");
-                }
-            }
-
-
         }
+
+        static void MostrarUsuario(List<Usuario> usuarios)
+        {
+            foreach (var usuario in usuarios)
+            {
+                Console.WriteLine($"Id: {usuario.Id}, Nombre: {usuario.Nombre}, Apellido: {usuario.Apellido}");
+            }
+        }
+
+        static void CrearNuevoUsuario()
+        {
+            try
+            {
+                Console.Write("Ingrese el nombre del nuevo usuario: ");
+                string nombreUsuario = Console.ReadLine();
+
+                Console.Write("Ingrese el apellido del nuevo usuario: ");
+                string apellidoUsuario = Console.ReadLine();
+
+                Console.Write("Ingrese el nombre del usuario: ");
+                string nombreDeUsuario = Console.ReadLine();
+
+                Console.Write("Ingrese la contraseña del nuevo usuario: ");
+                string contrasenaUsuario = Console.ReadLine();
+
+                Console.Write("Ingrese el correo electrónico del nuevo usuario: ");
+                string mailUsuario = Console.ReadLine();
+
+                UsuarioBusiness.CrearUsuario(new Usuario
+                {
+                    Nombre = nombreUsuario,
+                    Apellido = apellidoUsuario,
+                    NombreUsuario = nombreDeUsuario,
+                    Contrasena = contrasenaUsuario,
+                    Mail = mailUsuario
+                });
+
+                Console.WriteLine("Usuario creado exitosamente.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al crear el usuario: {ex.Message}");
+            }
+        }
+
+        static void ModificarUsuario()
+        {
+            try
+            {
+                Console.Write("Ingrese el Id del usuario a modificar: ");
+                if (int.TryParse(Console.ReadLine(), out int idModificar))
+                {
+                    var usuario = UsuarioBusiness.ObtenerUsuario(idModificar);
+                    if (usuario.Count > 0)
+                    {
+                        Console.Write("Ingrese el nuevo nombre del usuario: ");
+                        string nuevoNombre = Console.ReadLine();
+
+                        Console.Write("Ingrese el nuevo apellido del usuario: ");
+                        string nuevoApellido = Console.ReadLine();
+
+                        Console.Write("Ingrese el nuevo nombre de usuario: ");
+                        string nuevoNombreUsuario = Console.ReadLine();
+
+                        Console.Write("Ingrese el nuevo correo electrónico del usuario: ");
+                        string nuevoMail = Console.ReadLine();
+
+                        Console.Write("Ingrese la nueva contraseña del usuario: ");
+                        string nuevaContrasena = Console.ReadLine();
+
+                        UsuarioBusiness.ModificarUsuario(new Usuario
+                        {
+                            Id = idModificar,
+                            Nombre = nuevoNombre,
+                            Apellido = nuevoApellido,
+                            NombreUsuario = nuevoNombreUsuario,
+                            Mail = nuevoMail,
+                            Contrasena = nuevaContrasena
+                        });
+
+                        Console.WriteLine("Usuario modificado exitosamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se encontró ningún usuario con el Id proporcionado.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Entrada no válida para el Id.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al modificar el usuario: {ex.Message}");
+            }
+        }
+
+        static void EliminarUsuario()
+        {
+            try
+            {
+                Console.Write("Ingrese el Id del usuario a eliminar: ");
+                if (int.TryParse(Console.ReadLine(), out int idEliminar))
+                {
+                    var usuario = UsuarioBusiness.ObtenerUsuario(idEliminar);
+                    if (usuario.Count > 0)
+                    {
+                        UsuarioBusiness.EliminarUsuario(idEliminar);
+                        Console.WriteLine("Usuario eliminado exitosamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se encontró ningún usuario con el Id proporcionado.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Entrada no válida para el Id.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al eliminar el usuario: {ex.Message}");
+            }
+        }
+
 
         static void MenuProductos()
         {
-
             while (true)
             {
                 try
@@ -527,7 +275,7 @@ namespace Franco_Ferro
                             Console.Write("Ingrese el Id del producto a obtener: ");
                             if (int.TryParse(Console.ReadLine(), out int idObtener))
                             {
-                                MostrarProducto(ProductoData.ObtenerProducto(idObtener));
+                                MostrarProducto(ProductoBusiness.ObtenerProducto(idObtener));
                             }
                             else
                             {
@@ -536,7 +284,7 @@ namespace Franco_Ferro
                             break;
 
                         case "2":
-                            MostrarProducto(ProductoData.ListarProductos());
+                            MostrarProducto(ProductoBusiness.ListarProductos());
                             break;
 
                         case "3":
@@ -571,7 +319,7 @@ namespace Franco_Ferro
             }
         }
 
-        static void MostrarProducto(System.Collections.Generic.List<Producto> productos)
+        static void MostrarProducto(List<Producto> productos)
         {
             foreach (var producto in productos)
             {
@@ -598,7 +346,7 @@ namespace Franco_Ferro
                             Console.Write("Ingrese el Id del usuario: ");
                             if (int.TryParse(Console.ReadLine(), out int idUsuario))
                             {
-                                ProductoData.CrearProducto(new Producto
+                                ProductoBusiness.CrearProducto(new Producto
                                 {
                                     Descripcion = descripcion,
                                     Costo = costo,
@@ -634,7 +382,6 @@ namespace Franco_Ferro
             }
         }
 
-
         static void ModificarProducto()
         {
             try
@@ -642,7 +389,7 @@ namespace Franco_Ferro
                 Console.Write("Ingrese el Id del producto a modificar: ");
                 if (int.TryParse(Console.ReadLine(), out int idModificar))
                 {
-                    var producto = ProductoData.ObtenerProducto(idModificar);
+                    var producto = ProductoBusiness.ObtenerProducto(idModificar);
                     if (producto.Count > 0)
                     {
                         Console.Write("Ingrese la nueva descripción del producto: ");
@@ -660,7 +407,7 @@ namespace Franco_Ferro
                                     Console.Write("Ingrese el nuevo Id del usuario: ");
                                     if (int.TryParse(Console.ReadLine(), out int nuevoIdUsuario))
                                     {
-                                        ProductoData.ModificarProducto(new Producto
+                                        ProductoBusiness.ModificarProducto(new Producto
                                         {
                                             Id = idModificar,
                                             Descripcion = nuevaDescripcion,
@@ -714,10 +461,10 @@ namespace Franco_Ferro
                 Console.Write("Ingrese el Id del producto a eliminar: ");
                 if (int.TryParse(Console.ReadLine(), out int idEliminar))
                 {
-                    var producto = ProductoData.ObtenerProducto(idEliminar);
+                    var producto = ProductoBusiness.ObtenerProducto(idEliminar);
                     if (producto.Count > 0)
                     {
-                        ProductoData.EliminarProducto(new Producto { Id = idEliminar });
+                        ProductoBusiness.EliminarProducto(idEliminar);
                         Console.WriteLine("Producto eliminado exitosamente.");
                     }
                     else
@@ -735,10 +482,9 @@ namespace Franco_Ferro
                 Console.WriteLine($"Error al eliminar el producto: {ex.Message}");
             }
         }
-  
+
         static void MenuVentas()
         {
-
             while (true)
             {
                 try
@@ -760,7 +506,7 @@ namespace Franco_Ferro
                             Console.Write("Ingrese el Id de la venta a obtener: ");
                             if (int.TryParse(Console.ReadLine(), out int idObtener))
                             {
-                                MostrarVenta(VentaData.ObtenerVenta(idObtener));
+                                MostrarVenta(VentaBusiness.ObtenerVenta(idObtener));
                             }
                             else
                             {
@@ -769,7 +515,7 @@ namespace Franco_Ferro
                             break;
 
                         case "2":
-                            MostrarVenta(VentaData.ListarVentas());
+                            MostrarVenta(VentaBusiness.ListarVentas());
                             break;
 
                         case "3":
@@ -822,7 +568,7 @@ namespace Franco_Ferro
                 Console.Write("Ingrese el Id del usuario: ");
                 if (int.TryParse(Console.ReadLine(), out int idUsuario))
                 {
-                    VentaData.CrearVenta(new Venta
+                    VentaBusiness.CrearVenta(new Venta
                     {
                         Comentarios = comentarios,
                         IDUsuario = idUsuario
@@ -847,7 +593,7 @@ namespace Franco_Ferro
                 Console.Write("Ingrese el Id de la venta a modificar: ");
                 if (int.TryParse(Console.ReadLine(), out int idModificar))
                 {
-                    var venta = VentaData.ObtenerVenta(idModificar);
+                    var venta = VentaBusiness.ObtenerVenta(idModificar);
                     if (venta.Count > 0)
                     {
                         Console.Write("Ingrese los nuevos comentarios de la venta: ");
@@ -856,7 +602,7 @@ namespace Franco_Ferro
                         Console.Write("Ingrese el nuevo Id del usuario: ");
                         if (int.TryParse(Console.ReadLine(), out int nuevoIdUsuario))
                         {
-                            VentaData.ModificarVenta(new Venta
+                            VentaBusiness.ModificarVenta(new Venta
                             {
                                 ID = idModificar,
                                 Comentarios = nuevosComentarios,
@@ -892,10 +638,10 @@ namespace Franco_Ferro
                 Console.Write("Ingrese el Id de la venta a eliminar: ");
                 if (int.TryParse(Console.ReadLine(), out int idEliminar))
                 {
-                    var venta = VentaData.ObtenerVenta(idEliminar);
+                    var venta = VentaBusiness.ObtenerVenta(idEliminar);
                     if (venta.Count > 0)
                     {
-                        VentaData.EliminarVenta(new Venta { ID = idEliminar });
+                        VentaBusiness.EliminarVenta(idEliminar);
                         Console.WriteLine("Venta eliminada exitosamente.");
                     }
                     else
@@ -914,6 +660,7 @@ namespace Franco_Ferro
             }
         }
 
+
     }
-    }
+}
 
